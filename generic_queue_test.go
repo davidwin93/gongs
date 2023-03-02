@@ -3,11 +3,12 @@ package gongs_test
 import (
 	"encoding/json"
 	"fmt"
+	"sync"
+	"testing"
+
 	"github.com/nats-io/nats.go"
 	"github.com/sl1pm4t/gongs"
 	"github.com/sl1pm4t/gongs/test"
-	"sync"
-	"testing"
 )
 
 type TestStreamMsg struct {
@@ -64,7 +65,6 @@ func Test_GenericStream_QueueSubscribe(t *testing.T) {
 	)
 
 	wg := sync.WaitGroup{}
-
 	sub, err := workStream.QueueSubscribe("test-workers", func(evt *TestStreamMsg) error {
 		defer wg.Done()
 		t.Logf("Test Event: %d - %s\n", evt.eventData.Id, evt.eventData.Foo)
